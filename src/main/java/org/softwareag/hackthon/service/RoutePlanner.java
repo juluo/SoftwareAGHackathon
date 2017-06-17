@@ -223,8 +223,8 @@ public class RoutePlanner {
 	}
 
 	public long getDuration(Location start, Location end) {
-		Duration duration = distanceSrvc.getDuration(start.getLat(),start.getLon(),end.getLat(),end.getLon());
-		return Math.round(duration.getValue()/60);
+		double duration = distanceSrvc.getDuration(start.getLat(),start.getLon(),end.getLat(),end.getLon()).getRows().get(0).getElements().get(0).getDuration().getValue();
+		return Math.round(duration/60);
 	}
 
 	public List<Route> processTripDetails(Trip trip) {

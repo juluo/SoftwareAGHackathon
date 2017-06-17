@@ -16,6 +16,7 @@ import org.softwareag.hackthon.uber.FareEstimateService;
 import org.softwareag.hackthon.uber.ServerToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -66,9 +67,9 @@ public class RequestController {
 		return response;
 	}
 
-    @RequestMapping(value = "/accept",method = RequestMethod.POST,
+    @RequestMapping(value = "/accept/{userId}/{routeId}",method = RequestMethod.GET,
             consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Route accept(String userId, long routeId) {
+    public Route accept(@PathVariable("userId")String userId, @PathVariable("routeId") long routeId) {
     	Route route = routePlanner.acceptRoute(routeId);
     	if(route != null){
     		return routePlanner.acceptRoute(routeId);
@@ -88,9 +89,9 @@ public class RequestController {
 		return response;
 	}
     
-    @RequestMapping(value = "/get-status",method = RequestMethod.POST,
+    @RequestMapping(value = "/get-status/{userId}",method = RequestMethod.GET,
             consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-	public StartResponse getStatus(@RequestBody String userId) {
+	public StartResponse getStatus(@PathVariable("userId") String userId) {
 		LOG.info(userId);
 		//Trip trip = service.bindJsonToObj(requestbody, Trip.class);
 		//trip.setDuration(routePlanner.getDuration(trip.getFrom(), trip.getTo()));
