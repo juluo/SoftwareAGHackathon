@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import retrofit2.Response;
 
 /**
@@ -24,6 +26,7 @@ public class ServerToken {
     private final String SERVERTOKEN = "x-mBrc32JTbPYIjlcvAWTaMw0Ea0mdxEwYr4F6eE";
 
     @Bean
+    @PostConstruct
     public ServerTokenSession getServerTokenSession() {
         SessionConfiguration config = new SessionConfiguration.Builder()
                 .setClientId(CLIENTID)
@@ -34,41 +37,3 @@ public class ServerToken {
 
     }
 }
-
-/*
-
-package org.softwareag.hackthon.service;
-
-import com.uber.sdk.rides.client.model.Product;
-import com.uber.sdk.rides.client.model.Ride;
-import com.uber.sdk.rides.client.model.RideRequestParameters;
-
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-
-import retrofit2.Response;
-
-
-@Service
-public class FareEstimateService {
-
-    public void requestRide(float start_latitude ,float stop_longitude ,float end_latitude, float end_longitude){
-        RideRequestParameters rideRequestParameters = new RideRequestParameters.Builder().setPickupCoordinates(start_latitude, stop_longitude)
-                .setProductId(productId)
-                .setDropoffCoordinates(37.49f, -122.41f)
-                .build();
-        Ride ride = service.requestRide(rideRequestParameters).execute().body();
-        String rideId = ride.getRideId();
-    }
-
-    // Get a list of products for a specific location in GPS coordinates, example: 37.79f, -122.39f.
-    public void productsForspecificLocation() {
-        Response<List<Product>> response = service.getProducts(37.79f, -122.39f).execute();
-        List<Product> products = response.body();
-        String productId = products.get(0).getProductId();
-    }
-}
-
-
-*/

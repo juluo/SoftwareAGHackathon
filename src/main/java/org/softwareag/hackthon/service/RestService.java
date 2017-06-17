@@ -1,5 +1,8 @@
 package org.softwareag.hackthon.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.softwareag.hackthon.uber.FareEstimateService;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -13,8 +16,10 @@ import java.net.URL;
 @Service
 public class RestService {
 
+    final static Logger LOG = LoggerFactory.getLogger(RestService.class);
+
     // HTTP GET request
-    private String sendGet(String url) throws Exception {
+    public String sendGet(String url) throws Exception {
 
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -25,9 +30,11 @@ public class RestService {
         //add request header
         con.setRequestProperty("User-Agent", "CHROME");
 
+        con.setRequestProperty("User-Agent", "CHROME");
+
         int responseCode = con.getResponseCode();
-        System.out.println("\nSending 'GET' request to URL : " + url);
-        System.out.println("Response Code : " + responseCode);
+        LOG.info("\nSending 'GET' request to URL : " + url);
+        LOG.info("Response Code : " + responseCode);
 
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(con.getInputStream()));
