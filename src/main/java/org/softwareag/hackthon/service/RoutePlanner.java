@@ -213,7 +213,7 @@ public class RoutePlanner {
 		return duration;
 	}
 
-	public double getPrice(Location start, Location end) {
+	private double getPrice(Location start, Location end) {
 		FareEstimateBO fareEstimateBO = fareSrvc.getFareEstimate(start.getLat(),start.getLon(),end.getLat(),end.getLon());
 		List<Price> priceList = fareEstimateBO.getPrices();
 		return priceList.stream()
@@ -222,12 +222,12 @@ public class RoutePlanner {
 				.sum();
 	}
 
-	public long getDuration(Location start, Location end) {
+	private long getDuration(Location start, Location end) {
 		Duration duration = distanceSrvc.getDuration(start.getLat(),start.getLon(),end.getLat(),end.getLon());
 		return Math.round(duration.getValue()/60);
 	}
 
-	public List<Route> processTripDetails(Trip trip) {
+	private List<Route> processTripDetails(Trip trip) {
 		ShareDetails shareDetails = processInputAndSaveEntity(trip);
 		Trip primary = getTripDetails(shareDetails);
 		List<ShareDetails> shareDetailsList =  shareDetailsRepo.findByInActiveOrderById(true);
@@ -346,7 +346,6 @@ public class RoutePlanner {
 				}
 			}
 		}
-		
 		return null;
 	}
 	
@@ -363,8 +362,11 @@ public class RoutePlanner {
 		return true;		
 	}
 	
-	public Route getStatus(){
-		
+	public List<SuggestedRouteDetails> getStatus(String UserId){
+		List<SuggestedRouteDetails> suggestedRouteDetails = suggestedRouteDetailsRepo.findByPrimaryUserOrSecondaryUserOrderByIdDesc(UserId, UserId);
+		if(!CollectionUtils.isEmpty(suggestedRouteDetails)) {
+			return suggestedRouteDetails;				
+		}
 		return null;
 	}
 	

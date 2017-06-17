@@ -11,7 +11,6 @@ public interface SuggestedRouteDetailsRepo extends JpaRepository<SuggestedRouteD
 	
 	List<SuggestedRouteDetails> findByInActive(boolean flag);
 	
-	
-	
+	List<SuggestedRouteDetails> findByPrimaryUserOrSecondaryUserOrderByIdDesc(String user1, String user2);
 
 }
