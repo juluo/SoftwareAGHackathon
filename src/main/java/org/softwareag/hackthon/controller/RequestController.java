@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.softwareag.hackthon.entity.SuggestedRouteDetails;
 import org.softwareag.hackthon.google.GoogleDistanceService;
 import org.softwareag.hackthon.response.StartResponse;
+import org.softwareag.hackthon.service.Login;
 import org.softwareag.hackthon.service.RestService;
 import org.softwareag.hackthon.service.Route;
 import org.softwareag.hackthon.service.RoutePlanner;
@@ -64,7 +66,8 @@ public class RequestController {
 		return response;
 	}
 
-
+    @RequestMapping(value = "/accept",method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     public Route accept(String userId, long routeId) {
     	Route route = routePlanner.acceptRoute(routeId);
     	if(route != null){
@@ -73,6 +76,32 @@ public class RequestController {
     	
     	return null;
     }
+    
+    @RequestMapping(value = "/login",method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+	public StartResponse loginUser(@RequestBody String requestbody) {
+		LOG.info(requestbody);
+		Login login = service.bindJsonToObj(requestbody, Login.class);
+		boolean result = routePlanner.login(login);
+		StartResponse response = new StartResponse();
+		response.setStatus(200);		
+		return response;
+	}
+    
+    @RequestMapping(value = "/get-status",method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+	public StartResponse getStatus(@RequestBody String userId) {
+		LOG.info(userId);
+		//Trip trip = service.bindJsonToObj(requestbody, Trip.class);
+		//trip.setDuration(routePlanner.getDuration(trip.getFrom(), trip.getTo()));
+		//trip.setPrice(routePlanner.getPrice(trip.getFrom(), trip.getTo()));
+		List<SuggestedRouteDetails> routes = routePlanner.getStatus(userId);
+		StartResponse response = new StartResponse();
+		response.setStatus(200);
+		response.setRouteList(routes);
+		return response;
+	}
+    
 
 
 }
