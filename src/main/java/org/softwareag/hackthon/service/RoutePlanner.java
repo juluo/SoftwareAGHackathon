@@ -3,8 +3,12 @@
  */
 package org.softwareag.hackthon.service;
 
+import java.util.List;
+
+import org.softwareag.hackthon.entity.ShareDetails;
 import org.softwareag.hackthon.google.GoogleDistanceService;
 import org.softwareag.hackthon.googlebo.Distance;
+import org.softwareag.hackthon.repo.ShareDetailsRepo;
 import org.softwareag.hackthon.uber.FareEstimateService;
 import org.softwareag.hackthon.uberboobjects.FareEstimateBO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +26,9 @@ public class RoutePlanner {
 
 	@Autowired
 	private FareEstimateService fareSrvc;
+	
+	@Autowired
+	private ShareDetailsRepo shareDetailsRepo;
 
 	public Route getBestRoute(Trip primary, Trip secondary) {
 
@@ -118,7 +125,8 @@ public class RoutePlanner {
 	}
 
 	private double getPrice(Location start, Location end) {
-		FareEstimateBO fareEstimate = fareSrvc.getFareEstimate(start.getLat(), start.getLon(), end.getLat(), end.getLon());
+		FareEstimateBO fareEstimate = fareSrvc.getFareEstimate(start.getLat(), start.getLon(), end.getLat(),
+				end.getLon());
 		return 0;
 	}
 
@@ -126,4 +134,24 @@ public class RoutePlanner {
 		Distance distance = distanceSrvc.getDistance(start.getLat(), start.getLon(), end.getLat(), end.getLon());
 		return distance.getValue();
 	}
+
+	private List<Route> processTripDetails(Trip trip) {
+		ShareDetails shareDetails = processInputAndSaveEntity(trip);
+		return null;
+
+	}
+
+	private ShareDetails processInputAndSaveEntity(Trip trip) {
+		ShareDetails shareDetails = new ShareDetails();
+		shareDetails.setUserId(trip.getUserId());
+		shareDetails.setStartLat(trip.getFrom().getLat());
+		shareDetails.setStartLong(trip.getFrom().getLon());
+		shareDetails.setStopLat(trip.getTo().getLat());
+		shareDetails.setStopLong(trip.getTo().getLon());
+		shareDetails.setDuration(getDuration(trip.getFrom(), trip.getTo()));
+		shareDetails.setPrice(getPrice(trip.getFrom(), trip.getTo()));
+		shareDetails = shareDetailsRepo.save(shareDetails);
+		return shareDetails;		
+	}
+
 }
