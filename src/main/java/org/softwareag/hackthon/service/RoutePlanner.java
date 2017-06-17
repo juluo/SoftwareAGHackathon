@@ -4,6 +4,8 @@
 package org.softwareag.hackthon.service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -282,6 +284,49 @@ public class RoutePlanner {
 		shareDetails.setInActive(false);
 		shareDetails = shareDetailsRepo.save(shareDetails);
 		return shareDetails;		
+	}
+	
+	public Route acceptRoute(long routeId){
+		SuggestedRouteDetails suggestedRouteDetails = suggestedRouteDetailsRepo.findById(routeId);
+		int matchCount = suggestedRouteDetails.getMatchCount();
+		suggestedRouteDetails.setMatchCount(matchCount);
+		if(matchCount >= 2) {
+			suggestedRouteDetails.setInActive(true);
+			suggestedRouteDetailsRepo.save(suggestedRouteDetails);
+			List<SuggestedRouteDetails> suggestedRouteDetailsList = suggestedRouteDetailsRepo.findByInActive(false);
+			
+			// Expiry suggestions
+			for (SuggestedRouteDetails suggestedRouteDetails2 : suggestedRouteDetailsList) {
+				if (suggestedRouteDetails2.getPrimaryUser().equalsIgnoreCase(suggestedRouteDetails.getPrimaryUser())
+						|| suggestedRouteDetails2.getSecondaryUser()
+								.equalsIgnoreCase(suggestedRouteDetails.getPrimaryUser())
+						|| suggestedRouteDetails2.getPrimaryUser()
+								.equalsIgnoreCase(suggestedRouteDetails.getSecondaryUser())
+						|| suggestedRouteDetails2.getSecondaryUser()
+								.equalsIgnoreCase(suggestedRouteDetails.getSecondaryUser())) {
+					suggestedRouteDetails2.setInActive(true);
+					suggestedRouteDetailsRepo.save(suggestedRouteDetails2);
+				}
+
+			}
+			
+			// Expiry Share Details
+			List<String> users = new ArrayList<>();
+			users.addAll(Arrays.asList(suggestedRouteDetails.getPrimaryUser(), suggestedRouteDetails.getSecondaryUser()));
+			List<ShareDetails> shareDetails = shareDetailsRepo.findByInActiveAndUserIdIn(false, users);
+			if(!CollectionUtils.isEmpty(shareDetails)){
+				for (ShareDetails shareDetails2 : shareDetails) {
+					shareDetails2.setInActive(true);
+					shareDetailsRepo.save(shareDetails2);
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	public Route rejectRoute(){
+		return null;
 	}
 
 }
