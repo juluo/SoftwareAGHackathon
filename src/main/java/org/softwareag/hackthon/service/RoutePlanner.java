@@ -11,10 +11,12 @@ import java.util.List;
 
 import org.softwareag.hackthon.entity.ShareDetails;
 import org.softwareag.hackthon.entity.SuggestedRouteDetails;
+import org.softwareag.hackthon.entity.UserInfo;
 import org.softwareag.hackthon.google.GoogleDistanceService;
 import org.softwareag.hackthon.googlebo.Duration;
 import org.softwareag.hackthon.repo.ShareDetailsRepo;
 import org.softwareag.hackthon.repo.SuggestedRouteDetailsRepo;
+import org.softwareag.hackthon.repo.UserInfoRepo;
 import org.softwareag.hackthon.uber.FareEstimateService;
 import org.softwareag.hackthon.uberboobjects.FareEstimateBO;
 import org.softwareag.hackthon.uberboobjects.Price;
@@ -40,6 +42,9 @@ public class RoutePlanner {
 	
 	@Autowired
 	private SuggestedRouteDetailsRepo suggestedRouteDetailsRepo;
+	
+	@Autowired
+	private UserInfoRepo userInfoRepo;
 	
 
 	public Route getBestRoute(Trip primary, Trip secondary) {
@@ -348,5 +353,20 @@ public class RoutePlanner {
 	public Route rejectRoute(){
 		return null;
 	}
+	
+	public boolean login(Login login){
+		UserInfo user = new UserInfo();
+		user.setName(login.getName());
+		user.setPhone(login.getPhone());
+		user.setGender(login.getGender());
+		userInfoRepo.save(user);
+		return true;		
+	}
+	
+	public Route getStatus(){
+		
+		return null;
+	}
+	
 
 }
