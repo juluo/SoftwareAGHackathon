@@ -4,40 +4,49 @@ import java.util.LinkedList;
 
 public class Route {
 
-	private String startUser;
+	private long id;
 	
-	private String endUser;
+	private String primaryUser;
+	
+	private String secondaryUser;
 	
 	private Location start;
 	
 	private Location end;
 	
+	private LinkedList<Location> routeMap = new LinkedList<>();
+	
 	private double price;
 	
 	private long time;
 	
-	private long startIn = 0;
+	private long prinaryStartIn = 0;
 	
-	private double usrPrice;
+	private long secondaryStartIn = 0;
 	
-	private double usrTime;
+	private double primaryPrice;
 	
-	private LinkedList<Location> routeMap = new LinkedList<>();
+	private double secondaryPrice;
+	
+	private int primaryTime;
+	
+	private int secondaryTime;	
 
-	public String getStartUser() {
-		return startUser;
+
+	public String getPrimaryUser() {
+		return primaryUser;
 	}
 
-	public void setStartUser(String startUser) {
-		this.startUser = startUser;
+	public void setPrimaryUser(String primaryUser) {
+		this.primaryUser = primaryUser;
 	}
 
-	public String getEndUser() {
-		return endUser;
+	public String getSecondaryUser() {
+		return secondaryUser;
 	}
 
-	public void setEndUser(String endUser) {
-		this.endUser = endUser;
+	public void setSecondaryUser(String secondaryUser) {
+		this.secondaryUser = secondaryUser;
 	}
 
 	public Location getStart() {
@@ -80,29 +89,60 @@ public class Route {
 		this.time = time;
 	}
 
-	public long getStartIn() {
-		return startIn;
+	public double getPrimaryPrice() {
+		return primaryPrice;
 	}
 
-	public void setStartIn(long startIn) {
-		this.startIn = startIn;
+	public void setPrimaryPrice(double primaryPrice) {
+		this.primaryPrice = primaryPrice;
 	}
 
-	public double getUsrPrice() {
-		return usrPrice;
+	public double getSecondaryPrice() {
+		return secondaryPrice;
 	}
 
-	public void setUsrPrice(double usrPrice) {
-		this.usrPrice = usrPrice;
+	public void setSecondaryPrice(double secondaryPrice) {
+		this.secondaryPrice = secondaryPrice;
 	}
 
-	public double getUsrTime() {
-		return usrTime;
+	public int getPrimaryTime() {
+		return primaryTime;
 	}
 
-	public void setUsrTime(double usrTime) {
-		this.usrTime = usrTime;
+	public void setPrimaryTime(int primaryTime) {
+		this.primaryTime = primaryTime;
 	}
-	
+
+	public int getSecondaryTime() {
+		return secondaryTime;
+	}
+
+	public void setSecondaryTime(int secondaryTime) {
+		this.secondaryTime = secondaryTime;
+	}
+
+	public long getPrinaryStartIn() {
+		return prinaryStartIn;
+	}
+
+	public void setPrinaryStartIn(long prinaryStartIn) {
+		this.prinaryStartIn = prinaryStartIn;
+	}
+
+	public long getSecondaryStartIn() {
+		return secondaryStartIn;
+	}
+
+	public void setSecondaryStartIn(long secondaryStartIn) {
+		this.secondaryStartIn = secondaryStartIn;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
 	
 }
