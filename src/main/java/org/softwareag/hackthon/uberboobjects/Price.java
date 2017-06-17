@@ -138,5 +138,21 @@ public class Price {
         this.additionalProperties.put(name, value);
     }
 
+
+    @Override
+    public String toString() {
+        return "Price{" +
+                "localizedDisplayName='" + localizedDisplayName + '\'' +
+                ", distance=" + distance +
+                ", displayName='" + displayName + '\'' +
+                ", productId='" + productId + '\'' +
+                ", highEstimate=" + highEstimate +
+                ", lowEstimate=" + lowEstimate +
+                ", duration=" + duration +
+                ", estimate='" + estimate + '\'' +
+                ", currencyCode=" + currencyCode +
+                ", additionalProperties=" + additionalProperties +
+                '}';
+    }
 }
 

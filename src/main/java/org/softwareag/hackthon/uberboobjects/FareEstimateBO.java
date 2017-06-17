@@ -42,4 +42,11 @@ public class FareEstimateBO {
         this.additionalProperties.put(name, value);
     }
 
+    @Override
+    public String toString() {
+        return "FareEstimateBO{" +
+                "prices=" + prices +
+                ", additionalProperties=" + additionalProperties +
+                '}';
+    }
 }

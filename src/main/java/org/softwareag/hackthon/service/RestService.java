@@ -1,11 +1,17 @@
 package org.softwareag.hackthon.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.softwareag.hackthon.uber.FareEstimateService;
+import org.softwareag.hackthon.uber.ServerToken;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -16,7 +22,17 @@ import java.net.URL;
 @Service
 public class RestService {
 
+    private final ServerToken serverToken;
+
+    @Autowired
+    public RestService(ServerToken serverToken){
+        this.serverToken = serverToken;
+    }
+
     final static Logger LOG = LoggerFactory.getLogger(RestService.class);
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     // HTTP GET request
     public String sendGet(String url) throws Exception {
@@ -30,7 +46,8 @@ public class RestService {
         //add request header
         con.setRequestProperty("User-Agent", "CHROME");
 
-        con.setRequestProperty("User-Agent", "CHROME");
+        String server_token = "x-mBrc32JTbPYIjlcvAWTaMw0Ea0mdxEwYr4F6eE";
+        con.setRequestProperty("Authorization", "Token "+server_token);
 
         int responseCode = con.getResponseCode();
         LOG.info("\nSending 'GET' request to URL : " + url);
@@ -46,7 +63,20 @@ public class RestService {
         }
         in.close();
 
+        LOG.info(response.toString());
+
         return response.toString();
 
+    }
+
+
+    public <T> T bindJsonToObj(String request, Class<T> clazz) {
+        LOG.info("Request Body --> " + request);
+        try {
+            T t = objectMapper.readValue(request, clazz);
+            return t;
+        } catch (IOException e) {
+            throw new HttpMessageNotReadableException("IOException", e);
+        }
     }
 }

@@ -2,6 +2,7 @@ package org.softwareag.hackthon.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.softwareag.hackthon.uber.FareEstimateService;
 import org.softwareag.hackthon.uber.ServerToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -20,7 +21,17 @@ public class RequestController {
     @Autowired
     ServerToken serverToken;
 
+    @Autowired
+    FareEstimateService fareEstimateService;
+
     final static Logger LOG = LoggerFactory.getLogger(RequestController.class);
+
+    /***dummy controller to test uber integration***/
+    @RequestMapping(value = "/start", method = RequestMethod.GET)
+    public void start(){
+        LOG.info(fareEstimateService.calculateFare().toString());
+    }
+    /** **/
 
 
 }

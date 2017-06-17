@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.softwareag.hackthon.controller.RequestController;
 import org.softwareag.hackthon.service.RestService;
+import org.softwareag.hackthon.uberboobjects.FareEstimateBO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,21 +27,26 @@ public class FareEstimateService {
     @Autowired
     RestService restService;
 
-    String url = "https://sandbox-api.uber.com/v1.2/estimates/price?start_latitude=<STARTLAT>&start_longitude=<STARTLONG>&end_latitude=<ENDLAT>&end_longitude=<ENDLONG>";
+    String url = "https://api.uber.com/v1.2/estimates/price?start_latitude=<STARTLAT>&start_longitude=<STARTLONG>&end_latitude=<ENDLAT>&end_longitude=<ENDLONG>";
 
 
-    public void getFareEstimate(float start_latitude, float stop_longitude, float end_latitude, float end_longitude) {
+    public FareEstimateBO getFareEstimate(float start_latitude, float stop_longitude, float end_latitude, float end_longitude) {
 
         try {
-            restService.sendGet(url.replace("<STARTLAT>", String.valueOf(start_latitude))
-                                   .replace("<STARTLONG>", String.valueOf(stop_longitude))
-                                   .replace("<ENDLAT>", String.valueOf(end_latitude))
-                                   .replace("<ENDLONG>", String.valueOf(end_longitude)));
+            return restService.bindJsonToObj(restService.sendGet(url.replace("<STARTLAT>", String.valueOf(start_latitude))
+                    .replace("<STARTLONG>", String.valueOf(stop_longitude))
+                    .replace("<ENDLAT>", String.valueOf(end_latitude))
+                    .replace("<ENDLONG>", String.valueOf(end_longitude))), FareEstimateBO.class);
+
         } catch (Exception e) {
             LOG.info(e.getMessage());
             throw new RuntimeException("Error while getting fare estimate");
         }
-        }
+    }
+
+    public FareEstimateBO calculateFare(){
+        return getFareEstimate(13.0000632f,80.2331078f,12.9862535f,80.2457295f);
+    }
 
 
 }

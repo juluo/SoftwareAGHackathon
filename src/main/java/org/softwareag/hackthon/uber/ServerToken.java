@@ -25,8 +25,7 @@ public class ServerToken {
     private final String CLIENTID = "IaftrSzT_KSshKwoz91hIt3ynUN-FgtO";
     private final String SERVERTOKEN = "x-mBrc32JTbPYIjlcvAWTaMw0Ea0mdxEwYr4F6eE";
 
-    @Bean
-    @PostConstruct
+    /*@Bean
     public ServerTokenSession getServerTokenSession() {
         SessionConfiguration config = new SessionConfiguration.Builder()
                 .setClientId(CLIENTID)
@@ -35,5 +34,5 @@ public class ServerToken {
 
         return new ServerTokenSession(config);
 
-    }
+    }*/
 }
