@@ -3,12 +3,17 @@
  */
 package org.softwareag.hackthon.service;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 /**
  * @author prasad
  *
  */
+@Entity
 public class Trip {
 
+	@Id
 	private String userId;
 	
 	private Location from;
