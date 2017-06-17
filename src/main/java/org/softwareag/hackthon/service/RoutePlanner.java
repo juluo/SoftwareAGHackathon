@@ -12,7 +12,6 @@ import java.util.List;
 import org.softwareag.hackthon.entity.ShareDetails;
 import org.softwareag.hackthon.entity.SuggestedRouteDetails;
 import org.softwareag.hackthon.google.GoogleDistanceService;
-import org.softwareag.hackthon.googlebo.Distance;
 import org.softwareag.hackthon.googlebo.Duration;
 import org.softwareag.hackthon.repo.ShareDetailsRepo;
 import org.softwareag.hackthon.repo.SuggestedRouteDetailsRepo;
