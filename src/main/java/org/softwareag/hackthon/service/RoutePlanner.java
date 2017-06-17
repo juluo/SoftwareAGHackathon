@@ -213,7 +213,7 @@ public class RoutePlanner {
 		return duration;
 	}
 
-	private double getPrice(Location start, Location end) {
+	public double getPrice(Location start, Location end) {
 		FareEstimateBO fareEstimateBO = fareSrvc.getFareEstimate(start.getLat(),start.getLon(),end.getLat(),end.getLon());
 		List<Price> priceList = fareEstimateBO.getPrices();
 		return priceList.stream()
@@ -222,12 +222,12 @@ public class RoutePlanner {
 				.sum();
 	}
 
-	private long getDuration(Location start, Location end) {
+	public long getDuration(Location start, Location end) {
 		Duration duration = distanceSrvc.getDuration(start.getLat(),start.getLon(),end.getLat(),end.getLon());
 		return Math.round(duration.getValue()/60);
 	}
 
-	private List<Route> processTripDetails(Trip trip) {
+	public List<Route> processTripDetails(Trip trip) {
 		ShareDetails shareDetails = processInputAndSaveEntity(trip);
 		Trip primary = getTripDetails(shareDetails);
 		List<ShareDetails> shareDetailsList =  shareDetailsRepo.findByInActiveOrderById(true);
