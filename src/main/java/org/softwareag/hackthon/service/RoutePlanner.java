@@ -11,10 +11,12 @@ import org.softwareag.hackthon.entity.ShareDetails;
 import org.softwareag.hackthon.entity.SuggestedRouteDetails;
 import org.softwareag.hackthon.google.GoogleDistanceService;
 import org.softwareag.hackthon.googlebo.Distance;
+import org.softwareag.hackthon.googlebo.Duration;
 import org.softwareag.hackthon.repo.ShareDetailsRepo;
 import org.softwareag.hackthon.repo.SuggestedRouteDetailsRepo;
 import org.softwareag.hackthon.uber.FareEstimateService;
 import org.softwareag.hackthon.uberboobjects.FareEstimateBO;
+import org.softwareag.hackthon.uberboobjects.Price;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -37,7 +39,6 @@ public class RoutePlanner {
 	
 	@Autowired
 	private SuggestedRouteDetailsRepo suggestedRouteDetailsRepo;
-	
 
 	public Route getBestRoute(Trip primary, Trip secondary) {
 
@@ -102,12 +103,33 @@ public class RoutePlanner {
 
 			bestRoute.setPrimaryUser(primary.getUserId());
 			bestRoute.setSecondaryUser(secondary.getUserId());
-
+			bestRoute.setMapUrl(getMapURL(bestRoute.getRouteMap()));
 			return bestRoute;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	private String getMapURL(LinkedList<Location> routeMap) {
+		String url = "https://www.google.com/maps/dir/"
+				+ routeMap.get(0).getLat()
+				+ ","
+				+ routeMap.get(0).getLon()
+				+ "/"
+				+ routeMap.get(1).getLat()
+				+ ","
+				+ routeMap.get(1).getLon()
+				+ "/"
+				+ routeMap.get(2).getLat()
+				+ ","
+				+ routeMap.get(2).getLon()
+				+ "/"
+				+ routeMap.get(3).getLat()
+				+ ","
+				+ routeMap.get(3).getLon()
+				+ "/data=!3m1!4b1";
+		return null;
 	}
 
 	private double getPrice(double price, int primaryPriceFactor) {
@@ -185,14 +207,17 @@ public class RoutePlanner {
 	}
 
 	private double getPrice(Location start, Location end) {
-		FareEstimateBO fareEstimate = fareSrvc.getFareEstimate(start.getLat(), start.getLon(), end.getLat(),
-				end.getLon());
-		return 0;
+		FareEstimateBO fareEstimateBO = fareSrvc.getFareEstimate(start.getLat(),start.getLon(),end.getLat(),end.getLon());
+		List<Price> priceList = fareEstimateBO.getPrices();
+		return priceList.stream()
+				.filter(e -> e.getDisplayName().contentEquals("uberGO"))
+				.mapToDouble(Price::getHighEstimate)
+				.sum();
 	}
 
 	private long getDuration(Location start, Location end) {
-		Distance distance = distanceSrvc.getDistance(start.getLat(), start.getLon(), end.getLat(), end.getLon());
-		return distance.getValue();
+		Duration duration = distanceSrvc.getDuration(start.getLat(),start.getLon(),end.getLat(),end.getLon());
+		return Math.round(duration.getValue()/60);
 	}
 
 	private List<Route> processTripDetails(Trip trip) {

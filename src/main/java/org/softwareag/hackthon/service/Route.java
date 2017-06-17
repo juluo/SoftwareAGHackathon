@@ -31,6 +31,8 @@ public class Route {
 	private int primaryTime;
 	
 	private int secondaryTime;	
+	
+	private String mapUrl;
 
 
 	public String getPrimaryUser() {
@@ -143,6 +145,14 @@ public class Route {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public String getMapUrl() {
+		return mapUrl;
+	}
+
+	public void setMapUrl(String mapUrl) {
+		this.mapUrl = mapUrl;
 	}
 	
 }
