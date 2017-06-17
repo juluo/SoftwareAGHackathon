@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.softwareag.hackthon.google.GoogleDistanceService;
 import org.softwareag.hackthon.response.StartResponse;
+import org.softwareag.hackthon.service.RoutePlanner;
 import org.softwareag.hackthon.uber.FareEstimateService;
 import org.softwareag.hackthon.uber.ServerToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ public class RequestController {
 
     @Autowired
     GoogleDistanceService googleDistanceService;
+    
+    @Autowired
+    private RoutePlanner routePlanner;
 
     final static Logger LOG = LoggerFactory.getLogger(RequestController.class);
 
