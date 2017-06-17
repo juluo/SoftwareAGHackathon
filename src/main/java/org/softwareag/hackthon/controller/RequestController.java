@@ -1,10 +1,13 @@
 package org.softwareag.hackthon.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.softwareag.hackthon.google.GoogleDistanceService;
 import org.softwareag.hackthon.response.StartResponse;
 import org.softwareag.hackthon.service.RestService;
+import org.softwareag.hackthon.service.Route;
 import org.softwareag.hackthon.service.RoutePlanner;
 import org.softwareag.hackthon.service.Trip;
 import org.softwareag.hackthon.uber.FareEstimateService;
@@ -52,13 +55,24 @@ public class RequestController {
 	public StartResponse startRide(@RequestBody String requestbody) {
 		LOG.info(requestbody);
 		Trip trip = service.bindJsonToObj(requestbody, Trip.class);
-
+		trip.setDuration(routePlanner.getDuration(trip.getFrom(), trip.getTo()));
+		trip.setPrice(routePlanner.getPrice(trip.getFrom(), trip.getTo()));
+		List<Route> routes = routePlanner.processTripDetails(trip);
 		StartResponse response = new StartResponse();
 		response.setStatus(200);
+		response.setRoutes(routes);
 		return response;
 	}
 
 
+    public Route accept(String userId, long routeId) {
+    	Route route = routePlanner.acceptRoute(routeId);
+    	if(route != null){
+    		return routePlanner.acceptRoute(routeId);
+    	}
+    	
+    	return null;
+    }
 
 
 }
