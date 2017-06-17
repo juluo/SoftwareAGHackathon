@@ -27,7 +27,7 @@ public class FareEstimateService {
     @Autowired
     RestService restService;
 
-    String url = "https://api.uber.com/v1.2/estimates/price?start_latitude=<STARTLAT>&start_longitude=<STARTLONG>&end_latitude=<ENDLAT>&end_longitude=<ENDLONG>";
+    String url = "https://api.uber.com/v1.2/estimates/price?start_latitude=<STARTLAT>&start_longitude=<STARTLONG>&end_latitude=<ENDLAT>&end_longitude=<ENDLONG>&key=AIzaSyBcq3bZIduSisJaDMNUUMxha4cGGyWPFEI";
 
 
     public FareEstimateBO getFareEstimate(float start_latitude, float stop_longitude, float end_latitude, float end_longitude) {
@@ -36,7 +36,7 @@ public class FareEstimateService {
             return restService.bindJsonToObj(restService.sendGet(url.replace("<STARTLAT>", String.valueOf(start_latitude))
                     .replace("<STARTLONG>", String.valueOf(stop_longitude))
                     .replace("<ENDLAT>", String.valueOf(end_latitude))
-                    .replace("<ENDLONG>", String.valueOf(end_longitude))), FareEstimateBO.class);
+                    .replace("<ENDLONG>", String.valueOf(end_longitude)),true), FareEstimateBO.class);
 
         } catch (Exception e) {
             LOG.info(e.getMessage());

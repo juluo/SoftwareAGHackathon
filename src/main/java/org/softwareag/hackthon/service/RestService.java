@@ -35,7 +35,7 @@ public class RestService {
     private ObjectMapper objectMapper;
 
     // HTTP GET request
-    public String sendGet(String url) throws Exception {
+    public String sendGet(String url ,boolean authenticationRequired) throws Exception {
 
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -45,10 +45,10 @@ public class RestService {
 
         //add request header
         con.setRequestProperty("User-Agent", "CHROME");
-
-        String server_token = "x-mBrc32JTbPYIjlcvAWTaMw0Ea0mdxEwYr4F6eE";
-        con.setRequestProperty("Authorization", "Token "+server_token);
-
+        if(authenticationRequired) {
+            String server_token = "x-mBrc32JTbPYIjlcvAWTaMw0Ea0mdxEwYr4F6eE";
+            con.setRequestProperty("Authorization", "Token "+server_token);
+        }
         int responseCode = con.getResponseCode();
         LOG.info("\nSending 'GET' request to URL : " + url);
         LOG.info("Response Code : " + responseCode);
