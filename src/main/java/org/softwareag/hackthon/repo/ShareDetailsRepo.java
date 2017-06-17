@@ -10,6 +10,8 @@ public interface ShareDetailsRepo extends JpaRepository<ShareDetails, Long>{
 	
 	List<ShareDetails> findByUserId(String userID);
 	
+	List<ShareDetails> findByInActiveAndUserIdIn(boolean flag,List<String> userID);
+	
 	List<ShareDetails> findByInActiveOrderById(boolean flag);
 	
 	

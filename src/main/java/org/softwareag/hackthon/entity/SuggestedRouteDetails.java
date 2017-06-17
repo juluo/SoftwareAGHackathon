@@ -44,6 +44,11 @@ public class SuggestedRouteDetails {
 	private int primaryTime;
 
 	private int secondaryTime;
+	
+	private int matchCount = 0;
+	
+	private boolean inActive = false;
+	
 
 	public long getId() {
 		return id;
@@ -197,14 +202,32 @@ public class SuggestedRouteDetails {
 		this.combinedEndLong = combinedEndLong;
 	}
 
+	public int getMatchCount() {
+		return matchCount;
+	}
+
+	public void setMatchCount(int matchCount) {
+		this.matchCount = matchCount;
+	}
+
+	public boolean isInActive() {
+		return inActive;
+	}
+
+	public void setInActive(boolean inActive) {
+		this.inActive = inActive;
+	}
+
 	@Override
 	public String toString() {
 		return "SuggestedRouteDetails [id=" + id + ", primaryUser=" + primaryUser + ", secondaryUser=" + secondaryUser
-				+ ", combinedStart=" + combinedStartLat + ", combinedEnd=" + combinedEndLat + ", price=" + price + ", time="
-				+ time + ", point1=" + point1 + ", point2=" + point2 + ", point3=" + point3 + ", point4=" + point4
-				+ ", primaryStartIn=" + primaryStartIn + ", secondaryStartIn=" + secondaryStartIn + ", primaryPrice="
-				+ primaryPrice + ", secondaryPrice=" + secondaryPrice + ", primaryTime=" + primaryTime
-				+ ", secondaryTime=" + secondaryTime + "]";
+				+ ", combinedStartLat=" + combinedStartLat + ", combinedStartLong=" + combinedStartLong
+				+ ", combinedEndLat=" + combinedEndLat + ", combinedEndLong=" + combinedEndLong + ", price=" + price
+				+ ", time=" + time + ", point1=" + point1 + ", point2=" + point2 + ", point3=" + point3 + ", point4="
+				+ point4 + ", primaryStartIn=" + primaryStartIn + ", secondaryStartIn=" + secondaryStartIn
+				+ ", primaryPrice=" + primaryPrice + ", secondaryPrice=" + secondaryPrice + ", primaryTime="
+				+ primaryTime + ", secondaryTime=" + secondaryTime + ", matchCount=" + matchCount + ", inActive="
+				+ inActive + "]";
 	}
 
 }
