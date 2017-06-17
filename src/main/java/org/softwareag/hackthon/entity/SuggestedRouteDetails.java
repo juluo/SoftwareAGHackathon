@@ -13,21 +13,25 @@ public class SuggestedRouteDetails {
 
 	private String secondaryUser;
 
-	private double combinedStart;
+	private double combinedStartLat;
+	
+	private double combinedStartLong;
 
-	private double combinedEnd;
+	private double combinedEndLat;
+	
+	private double combinedEndLong;
 
 	private double price;
 
 	private long time;
 
-	private double point1;
+	private String point1;
 
-	private double point2;
+	private String point2;
 
-	private double point3;
+	private String point3;
 
-	private double point4;
+	private String point4;
 
 	private long primaryStartIn = 0;
 
@@ -65,22 +69,6 @@ public class SuggestedRouteDetails {
 		this.secondaryUser = secondaryUser;
 	}
 
-	public double getCombinedStart() {
-		return combinedStart;
-	}
-
-	public void setCombinedStart(double combinedStart) {
-		this.combinedStart = combinedStart;
-	}
-
-	public double getCombinedEnd() {
-		return combinedEnd;
-	}
-
-	public void setCombinedEnd(double combinedEnd) {
-		this.combinedEnd = combinedEnd;
-	}
-
 	public double getPrice() {
 		return price;
 	}
@@ -97,35 +85,35 @@ public class SuggestedRouteDetails {
 		this.time = time;
 	}
 
-	public double getPoint1() {
+	public String getPoint1() {
 		return point1;
 	}
 
-	public void setPoint1(double point1) {
+	public void setPoint1(String point1) {
 		this.point1 = point1;
 	}
 
-	public double getPoint2() {
+	public String getPoint2() {
 		return point2;
 	}
 
-	public void setPoint2(double point2) {
+	public void setPoint2(String point2) {
 		this.point2 = point2;
 	}
 
-	public double getPoint3() {
+	public String getPoint3() {
 		return point3;
 	}
 
-	public void setPoint3(double point3) {
+	public void setPoint3(String point3) {
 		this.point3 = point3;
 	}
 
-	public double getPoint4() {
+	public String getPoint4() {
 		return point4;
 	}
 
-	public void setPoint4(double point4) {
+	public void setPoint4(String point4) {
 		this.point4 = point4;
 	}
 
@@ -177,10 +165,42 @@ public class SuggestedRouteDetails {
 		this.secondaryTime = secondaryTime;
 	}
 
+	public double getCombinedStartLat() {
+		return combinedStartLat;
+	}
+
+	public void setCombinedStartLat(double combinedStartLat) {
+		this.combinedStartLat = combinedStartLat;
+	}
+
+	public double getCombinedStartLong() {
+		return combinedStartLong;
+	}
+
+	public void setCombinedStartLong(double combinedStartLong) {
+		this.combinedStartLong = combinedStartLong;
+	}
+
+	public double getCombinedEndLat() {
+		return combinedEndLat;
+	}
+
+	public void setCombinedEndLat(double combinedEndLat) {
+		this.combinedEndLat = combinedEndLat;
+	}
+
+	public double getCombinedEndLong() {
+		return combinedEndLong;
+	}
+
+	public void setCombinedEndLong(double combinedEndLong) {
+		this.combinedEndLong = combinedEndLong;
+	}
+
 	@Override
 	public String toString() {
 		return "SuggestedRouteDetails [id=" + id + ", primaryUser=" + primaryUser + ", secondaryUser=" + secondaryUser
-				+ ", combinedStart=" + combinedStart + ", combinedEnd=" + combinedEnd + ", price=" + price + ", time="
+				+ ", combinedStart=" + combinedStartLat + ", combinedEnd=" + combinedEndLat + ", price=" + price + ", time="
 				+ time + ", point1=" + point1 + ", point2=" + point2 + ", point3=" + point3 + ", point4=" + point4
 				+ ", primaryStartIn=" + primaryStartIn + ", secondaryStartIn=" + secondaryStartIn + ", primaryPrice="
 				+ primaryPrice + ", secondaryPrice=" + secondaryPrice + ", primaryTime=" + primaryTime

@@ -27,6 +27,8 @@ public class ShareDetails {
 	private long duration;
 
 	private double price;
+	
+	private boolean inActive;
 
 	public int getId() {
 		return id;
@@ -92,11 +94,19 @@ public class ShareDetails {
 		this.price = price;
 	}
 
+	public boolean isInActive() {
+		return inActive;
+	}
+
+	public void setInActive(boolean inActive) {
+		this.inActive = inActive;
+	}
+
 	@Override
 	public String toString() {
 		return "ShareDetails [id=" + id + ", userId=" + userId + ", startLat=" + startLat + ", startLong=" + startLong
 				+ ", stopLat=" + stopLat + ", stopLong=" + stopLong + ", duration=" + duration + ", price=" + price
-				+ "]";
+				+ ", inActive=" + inActive + "]";
 	}
 
 }

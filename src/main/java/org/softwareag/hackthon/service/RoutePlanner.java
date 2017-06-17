@@ -3,16 +3,20 @@
  */
 package org.softwareag.hackthon.service;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.softwareag.hackthon.entity.ShareDetails;
+import org.softwareag.hackthon.entity.SuggestedRouteDetails;
 import org.softwareag.hackthon.google.GoogleDistanceService;
 import org.softwareag.hackthon.googlebo.Distance;
 import org.softwareag.hackthon.repo.ShareDetailsRepo;
+import org.softwareag.hackthon.repo.SuggestedRouteDetailsRepo;
 import org.softwareag.hackthon.uber.FareEstimateService;
 import org.softwareag.hackthon.uberboobjects.FareEstimateBO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 /**
  * @author prasad
@@ -29,6 +33,10 @@ public class RoutePlanner {
 	
 	@Autowired
 	private ShareDetailsRepo shareDetailsRepo;
+	
+	@Autowired
+	private SuggestedRouteDetailsRepo suggestedRouteDetailsRepo;
+	
 
 	public Route getBestRoute(Trip primary, Trip secondary) {
 
@@ -137,8 +145,72 @@ public class RoutePlanner {
 
 	private List<Route> processTripDetails(Trip trip) {
 		ShareDetails shareDetails = processInputAndSaveEntity(trip);
+		Trip primary = getTripDetails(shareDetails);
+		List<ShareDetails> shareDetailsList =  shareDetailsRepo.findByInActiveOrderById(true);
+		List<SuggestedRouteDetails> suggestedRouteDetailsList = new LinkedList<SuggestedRouteDetails>();
+		List<Route> routeList = new LinkedList<Route>();
+		if(!CollectionUtils.isEmpty(shareDetailsList)){
+			for (ShareDetails iterShareDetail : shareDetailsList) {
+				Trip secodary = getTripDetails(iterShareDetail);
+				Route route = getBestRoute(primary, secodary);
+				SuggestedRouteDetails suggestedRouteDetails = new SuggestedRouteDetails();
+				suggestedRouteDetails.setPrimaryUser(shareDetails.getUserId());
+				suggestedRouteDetails.setSecondaryUser(iterShareDetail.getUserId());
+				suggestedRouteDetails.setPrimaryPrice(route.getPrimaryPrice());
+				suggestedRouteDetails.setSecondaryPrice(route.getSecondaryPrice());
+				suggestedRouteDetails.setPrimaryTime(route.getPrimaryTime());
+				suggestedRouteDetails.setSecondaryTime(route.getSecondaryTime());
+				suggestedRouteDetails.setPrimaryStartIn(route.getPrinaryStartIn());
+				suggestedRouteDetails.setSecondaryStartIn(route.getSecondaryStartIn());
+				suggestedRouteDetails.setCombinedEndLat(route.getEnd().getLat());
+				suggestedRouteDetails.setCombinedEndLong(route.getEnd().getLon());
+				suggestedRouteDetails.setCombinedStartLat(route.getStart().getLat());
+				suggestedRouteDetails.setCombinedStartLong(route.getStart().getLon());
+				suggestedRouteDetails.setPrice(route.getPrice());
+				suggestedRouteDetails.setTime(route.getTime());
+				setAllFourPointString(route, suggestedRouteDetails);
+				suggestedRouteDetails = suggestedRouteDetailsRepo.save(suggestedRouteDetails);
+				route.setId(suggestedRouteDetails.getId());
+				routeList.add(route);
+			}
+			return routeList;
+		}
 		return null;
+	}
 
+	private void setAllFourPointString(Route route, SuggestedRouteDetails suggestedRouteDetails) {
+		int count = 1;
+		for (Location loc : route.getRouteMap()) {
+			if(count < 2){
+				suggestedRouteDetails.setPoint1(loc.getLon() + "," + loc.getLat());
+				count++;
+			} else if(count < 3) {
+				suggestedRouteDetails.setPoint2(loc.getLon() + "," + loc.getLat());
+				count++;
+			} else if(count < 4) {
+				suggestedRouteDetails.setPoint3(loc.getLon() + "," + loc.getLat());
+				count++;
+			} else if(count < 5) {
+				suggestedRouteDetails.setPoint4(loc.getLon() + "," + loc.getLat());
+				count++;
+			}
+		}
+	}	
+
+	private Trip getTripDetails(ShareDetails shareDetail) {
+		Trip trip = new Trip();
+		trip.setUserId(shareDetail.getUserId());
+		Location from = new Location();
+		from.setLat(shareDetail.getStartLat());
+		from.setLon(shareDetail.getStartLong());
+		trip.setFrom(from );
+		Location to = new Location();
+		to.setLat(shareDetail.getStopLat());
+		to.setLon(shareDetail.getStopLong());
+		trip.setTo(to);
+		trip.setPrice(shareDetail.getPrice());
+		trip.setDuration(shareDetail.getDuration());
+		return null;
 	}
 
 	private ShareDetails processInputAndSaveEntity(Trip trip) {
@@ -150,6 +222,7 @@ public class RoutePlanner {
 		shareDetails.setStopLong(trip.getTo().getLon());
 		shareDetails.setDuration(getDuration(trip.getFrom(), trip.getTo()));
 		shareDetails.setPrice(getPrice(trip.getFrom(), trip.getTo()));
+		shareDetails.setInActive(false);
 		shareDetails = shareDetailsRepo.save(shareDetails);
 		return shareDetails;		
 	}
