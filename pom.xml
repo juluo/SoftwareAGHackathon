@@ -56,6 +56,14 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.uber.sdk/rides -->
+		<dependency>
+			<groupId>com.uber.sdk</groupId>
+			<artifactId>rides</artifactId>
+			<version>0.6.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

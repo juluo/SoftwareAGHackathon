@@ -1,4 +1,4 @@
-package org.softwareag.hackthon.bookTickets;
+package org.softwareag.hackthon;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
