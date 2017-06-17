@@ -26,9 +26,9 @@ public class Price {
     @JsonProperty("product_id")
     private String productId;
     @JsonProperty("high_estimate")
-    private Object highEstimate;
+    private double highEstimate;
     @JsonProperty("low_estimate")
-    private Object lowEstimate;
+    private double lowEstimate;
     @JsonProperty("duration")
     private Integer duration;
     @JsonProperty("estimate")
@@ -79,22 +79,22 @@ public class Price {
     }
 
     @JsonProperty("high_estimate")
-    public Object getHighEstimate() {
+    public double getHighEstimate() {
         return highEstimate;
     }
 
     @JsonProperty("high_estimate")
-    public void setHighEstimate(Object highEstimate) {
+    public void setHighEstimate(double highEstimate) {
         this.highEstimate = highEstimate;
     }
 
     @JsonProperty("low_estimate")
-    public Object getLowEstimate() {
+    public double getLowEstimate() {
         return lowEstimate;
     }
 
     @JsonProperty("low_estimate")
-    public void setLowEstimate(Object lowEstimate) {
+    public void setLowEstimate(double lowEstimate) {
         this.lowEstimate = lowEstimate;
     }
 

@@ -11,10 +11,12 @@ import org.softwareag.hackthon.entity.ShareDetails;
 import org.softwareag.hackthon.entity.SuggestedRouteDetails;
 import org.softwareag.hackthon.google.GoogleDistanceService;
 import org.softwareag.hackthon.googlebo.Distance;
+import org.softwareag.hackthon.googlebo.Duration;
 import org.softwareag.hackthon.repo.ShareDetailsRepo;
 import org.softwareag.hackthon.repo.SuggestedRouteDetailsRepo;
 import org.softwareag.hackthon.uber.FareEstimateService;
 import org.softwareag.hackthon.uberboobjects.FareEstimateBO;
+import org.softwareag.hackthon.uberboobjects.Price;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -185,14 +187,17 @@ public class RoutePlanner {
 	}
 
 	private double getPrice(Location start, Location end) {
-		FareEstimateBO fareEstimate = fareSrvc.getFareEstimate(start.getLat(), start.getLon(), end.getLat(),
-				end.getLon());
-		return 0;
+		FareEstimateBO fareEstimateBO = fareSrvc.getFareEstimate(start.getLat(),start.getLon(),end.getLat(),end.getLon());
+		List<Price> priceList = fareEstimateBO.getPrices();
+		return priceList.stream()
+				.filter(e -> e.getDisplayName().contentEquals("uberGO"))
+				.mapToDouble(Price::getHighEstimate)
+				.sum();
 	}
 
 	private long getDuration(Location start, Location end) {
-		Distance distance = distanceSrvc.getDistance(start.getLat(), start.getLon(), end.getLat(), end.getLon());
-		return distance.getValue();
+		Duration duration = distanceSrvc.getDuration(start.getLat(),start.getLon(),end.getLat(),end.getLon());
+		return Math.round(duration.getValue()/60);
 	}
 
 	private List<Route> processTripDetails(Trip trip) {
