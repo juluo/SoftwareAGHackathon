@@ -1,12 +1,16 @@
 package org.softwareag.hackthon.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "suggested_route_details")
 public class SuggestedRouteDetails {
 
+	@Id
+	@GeneratedValue
 	private long id;
 
 	private String primaryUser;
