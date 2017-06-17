@@ -4,8 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.softwareag.hackthon.googlebo.Distance;
 import org.softwareag.hackthon.service.RestService;
-import org.softwareag.hackthon.uber.FareEstimateService;
-import org.softwareag.hackthon.uberboobjects.FareEstimateBO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +21,7 @@ public class GoogleDistanceService {
 
     String url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=<STARTLATLONG>&destinations=<ENDLATLONG>&key=";
 
-    public Distance getDistance(float start_latitude, float stop_longitude, float end_latitude, float end_longitude) {
+    public Distance getDistance(double start_latitude, double stop_longitude, double end_latitude, double end_longitude) {
 
         try {
             return restService.bindJsonToObj(restService.sendGet(url.replace("<STARTLATLONG>", String.valueOf(start_latitude)+","+String.valueOf(stop_longitude))
