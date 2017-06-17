@@ -1,20 +1,11 @@
 package org.softwareag.hackthon.uber;
 
-import com.uber.sdk.rides.client.model.Product;
-import com.uber.sdk.rides.client.model.Ride;
-import com.uber.sdk.rides.client.model.RideRequestParameters;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.softwareag.hackthon.controller.RequestController;
 import org.softwareag.hackthon.service.RestService;
 import org.softwareag.hackthon.uberboobjects.FareEstimateBO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-
-import retrofit2.Response;
 
 /**
  * Created by rvignesh on 6/17/2017.
@@ -30,7 +21,7 @@ public class FareEstimateService {
     String url = "https://api.uber.com/v1.2/estimates/price?start_latitude=<STARTLAT>&start_longitude=<STARTLONG>&end_latitude=<ENDLAT>&end_longitude=<ENDLONG>&key=AIzaSyBcq3bZIduSisJaDMNUUMxha4cGGyWPFEI";
 
 
-    public FareEstimateBO getFareEstimate(float start_latitude, float stop_longitude, float end_latitude, float end_longitude) {
+    public FareEstimateBO getFareEstimate(double start_latitude, double stop_longitude, double end_latitude, double end_longitude) {
 
         try {
             return restService.bindJsonToObj(restService.sendGet(url.replace("<STARTLAT>", String.valueOf(start_latitude))
@@ -45,7 +36,7 @@ public class FareEstimateService {
     }
 
     public FareEstimateBO calculateFare(){
-        return getFareEstimate(13.0000632f,80.2331078f,12.9862535f,80.2457295f);
+        return getFareEstimate(13.0000632,80.2331078,12.9862535,80.2457295);
     }
 
 
