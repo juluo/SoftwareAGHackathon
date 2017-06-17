@@ -2,6 +2,7 @@ package org.softwareag.hackthon.google;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.softwareag.hackthon.googlebo.ApiResponse;
 import org.softwareag.hackthon.googlebo.Distance;
 import org.softwareag.hackthon.googlebo.Duration;
 import org.softwareag.hackthon.service.RestService;
@@ -22,11 +23,11 @@ public class GoogleDistanceService {
 
     String url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=<STARTLATLONG>&destinations=<ENDLATLONG>&key=";
 
-    public Duration getDuration(double start_latitude, double stop_longitude, double end_latitude, double end_longitude) {
+    public ApiResponse getDuration(double start_latitude, double stop_longitude, double end_latitude, double end_longitude) {
 
         try {
             return restService.bindJsonToObj(restService.sendGet(url.replace("<STARTLATLONG>", String.valueOf(start_latitude)+","+String.valueOf(stop_longitude))
-                    .replace("<ENDLATLONG>", String.valueOf(end_latitude)+","+String.valueOf(end_longitude)),false), Duration.class);
+                    .replace("<ENDLATLONG>", String.valueOf(end_latitude)+","+String.valueOf(end_longitude)),false), ApiResponse.class);
 
         } catch (Exception e) {
             LOG.info(e.getMessage());
